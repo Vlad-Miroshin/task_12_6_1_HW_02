@@ -1,0 +1,125 @@
+:root {
+    --main-font-family: "Roboto", sans-serif;
+    --main-font-size: 16px;
+    --main-font-color: #414446;
+    --main-color-gray: #414446;
+    --main-color-white: #dbdbdd;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    color: var(--main-font-color);
+    background: linear-gradient(#f7f6f1, #bebebd);
+    background-size: cover;
+    background-position: center;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 7rem;
+    width: 100%;
+    text-align: center;
+}
+
+header h1 {
+    color: var(--main-font-color);
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+main h2 {
+    color: var(--main-font-color);
+    font-size: 1rem;
+    width: 100%;
+}
+
+.content-table {
+    background-color: var(--main-color-white);
+    /* border-collapse: collapse; */
+    margin: 25px 0;
+    font-size: .9em;
+    min-width: 700px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .3);
+    border-spacing: 1px;
+}
+
+.content-table thead th {
+    background-color: #009879;
+    color: var(--main-color-white);
+    text-align: center;
+    font-weight: 500;
+    width: 50px;
+}
+
+.content-table th, 
+.content-table tr {
+    padding: 5px 5px;
+    color: var(--main-color-gray);
+    text-align: center;
+}
+
+.content-table tbody tr {
+    border: 1px solid var(--main-color-gray);
+    background-color: #fafae1;
+}
+
+/* .content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+} */
+
+/* .content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+} */
+
+.first-column {
+    padding: 6px 8px;
+    background-color: #009879;
+    color: var(--main-color-white);
+    font-weight: 500;
+}
+
+.value-diff {
+    background-color: #f5a884;
+    font-weight: 500;
+}
+
+
+
+
+
+.footer {
+    padding-bottom: 4rem;
+    text-align: center;
+}
+
+.footer a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.copyright {
+    margin-top: 7rem;
+    font-size: .75rem;
+    color: var(--main-color-gray);
+}
