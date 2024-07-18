@@ -20,17 +20,17 @@
     <main>
         <div class="databox">
 
-            <h2 aria-label="Начальные значения">Исходные данные. Разбиение. Определения пола. Сокращение имени.</h2>
             <table class="content-table">
+                <caption aria-label="Начальные значения">Исходные данные. Разбиение. Определения пола. Сокращение имени.</caption>
                 <thead>
                     <tr>
-                        <th>fullname</th>
-                        <th>job</th>
-                        <th>surname</th>
-                        <th>firstName</th>
-                        <th>patronymic</th>
-                        <th>gender</th>
-                        <th>shortName</th>
+                        <th>Полное имя</th>
+                        <th>Профессия</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Пол</th>
+                        <th>Сокращение</th>
                     </tr>
                 </thead>
 
@@ -51,18 +51,19 @@
                         <td><?= $parts[0]; ?></td>
                         <td><?= $parts[1]; ?></td>
                         <td><?= $parts[2]; ?></td>
-                        <td><?= $gender; ?></td>
+                        <td class="column-center"><?= $gender; ?></td>
                         <td><?= $shortname; ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
 
-            <h2 aria-label="По и возраст">Половозрастной состав</h2>
             <table class="content-table">
+                <caption aria-label="Распределение">Гендерный состав.</caption>
                 <thead>
                     <tr>
                         <th>Пол</th>
+                        <th>Количество</th>
                         <th>Процент</th>
                     </tr>
                 </thead>
@@ -74,8 +75,9 @@
                         foreach($genders as $key => $value): 
                     ?>
                     <tr>
-                        <td><?= $value['name']; ?></td>
-                        <td><?= $value['percent'] . '%'; ?></td>
+                        <td class="column-center"><?= $value['name']; ?></td>
+                        <td class="column-center"><?= $value['count']; ?></td>
+                        <td class="column-center"><?= $value['percent'] . '%'; ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

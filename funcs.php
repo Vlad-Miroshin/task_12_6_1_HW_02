@@ -1,55 +1,10 @@
 <?php
-    //include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data.php';
+include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data.php';
 
 // полный список персон
 function getItems() {
-    //return $example_persons_array;
-    return [
-        [
-            'fullname' => 'Иванов Иван Иванович',
-            'job' => 'tester',
-        ],
-        [
-            'fullname' => 'Степанова Наталья Степановна',
-            'job' => 'frontend-developer',
-        ],
-        [
-            'fullname' => 'Пащенко Владимир Александрович',
-            'job' => 'analyst',
-        ],
-        [
-            'fullname' => 'Громов Александр Иванович',
-            'job' => 'fullstack-developer',
-        ],
-        [
-            'fullname' => 'Славин Семён Сергеевич',
-            'job' => 'analyst',
-        ],
-        [
-            'fullname' => 'Цой Владимир Антонович',
-            'job' => 'frontend-developer',
-        ],
-        [
-            'fullname' => 'Быстрая Юлия Сергеевна',
-            'job' => 'PR-manager',
-        ],
-        [
-            'fullname' => 'Шматко Антонина Сергеевна',
-            'job' => 'HR-manager',
-        ],
-        [
-            'fullname' => 'аль-Хорезми Мухаммад ибн-Муса',
-            'job' => 'analyst',
-        ],
-        [
-            'fullname' => 'Бардо Жаклин Фёдоровна',
-            'job' => 'android-developer',
-        ],
-        [
-            'fullname' => 'Шварцнегер Арнольд Густавович',
-            'job' => 'babysitter',
-        ],
-    ];    
+    global $example_persons_array;
+    return $example_persons_array;
 };
 
 // возвращает массив из 3 элементов: Фамилия, Имя, Отчество
@@ -60,7 +15,7 @@ function getPartsFromFullname($fullname) {
         $parts = explode(' ', $fullname);
         foreach($parts as $p) {
             if (trim($p)) {
-                $items[] = $p;
+                $items[] = mb_convert_case($p, MB_CASE_TITLE, "UTF-8");
 
                 if (count($items) === 3)
                     break;
@@ -79,7 +34,7 @@ function getPartsFromFullname($fullname) {
 
 // возвращает склеенные через пробел элементы полного имени
 function getFullnameFromParts($fam = '', $im = '', $ot = '') {
-    $res = $fam.' '.$im.' '.$ot;
+    $res = $fam . ' ' . $im . ' ' . $ot;
     return trim($res);
 };
 
@@ -87,16 +42,16 @@ function getFullnameFromParts($fam = '', $im = '', $ot = '') {
 function getShortName($fullname) {
     $parts = getPartsFromFullname($fullname);
 
-    return $parts[1] . ' ' . mb_strtoupper(mb_substr($parts[0], 0, 1)) . '.';
+    return $parts[1] . ' ' . mb_substr($parts[0], 0, 1) . '.';
 }
 
 // пытается определить пол по элементам имени
 function getGenderFromName($fullname) {
     $parts = getPartsFromFullname($fullname);
 
-    $fam = mb_strtolower($parts[0]);
-    $im = mb_strtolower($parts[1]);
-    $ot = mb_strtolower($parts[2]);
+    $fam = $parts[0];
+    $im = $parts[1];
+    $ot = $parts[2];
 
     $g = 0;
 
@@ -130,6 +85,7 @@ function getGenderFromName($fullname) {
         return 0;
 };
 
+// Возвращает данные гендерного распределения
 function getGenderDescription($items) {
     $counters = [];
 
@@ -150,7 +106,11 @@ function getGenderDescription($items) {
 
     $keys = array_keys($counters);
     foreach ($keys as $key) {
-        $res[$key] = ['name' => getGenderName($key), 'percent' => round(($counters[$key] / $total) * 100, 1)];
+        $res[$key] = [
+            'name' => getGenderName($key), 
+            'count' => $counters[$key],
+            'percent' => round(($counters[$key] / $total) * 100, 1)
+        ];
     };
 
     return $res;
@@ -165,3 +125,55 @@ function getGenderName($g) {
         return 'Не определён';
 };
 
+// выбор идеальной пары
+function getPerfectPartner($fam, $im, $ot, $items) {
+    // для неопределённого пола невозможно выбрать противоположный
+    // поэтому такие варианты исключаем
+    $res = [
+        'gender_1' => 0,
+        'short_1' => '',
+        'gender_2' => 0,
+        'short_2' => '',
+        'percent' => 0,
+        'success' => false,
+        'comment' => '',
+    ];
+
+    $fullname = getFullnameFromParts($fam, $im, $ot);
+    $g1 = getGenderFromName($fullname);
+
+    if ($g1 === 0) {
+        $res['comment'] = 'Невозможен подбор пары для неопределённого пола';
+    } else {
+        $res['gender_1'] = $g1;
+        $res['short_1'] = getShortName($fullname);
+
+        $attempt = 0;
+        $partner = null;
+
+        do {
+            
+            $rnd_key = array_rand($items);
+            $partner = $items[$rnd_key];
+    
+            $g2 = getGenderFromName($partner['fullname']);
+
+            if (++$attempt > 10) {
+                $partner = null;
+                break;
+            }
+    
+        } while ($g2 === 0 || $g2 === $g1 || $fullname === $partner['fullname']);
+
+        if ($partner) {
+            $res['gender_2'] = $g2;
+            $res['short_2'] = getShortName($partner['fullname']);
+            $res['comment'] = 'Не удалось подобрать идеальную пару';
+        } else {
+            $res['comment'] = 'Не удалось подобрать идеальную пару';
+        }
+    
+    }
+
+    return $res;
+}

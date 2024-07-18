@@ -54,29 +54,35 @@ main h2 {
 
 .content-table {
     background-color: var(--main-color-white);
-    /* border-collapse: collapse; */
     margin: 25px 0;
     font-size: .9em;
-    min-width: 700px;
+    min-width: 300px;
     border-radius: 5px 5px 0 0;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, .3);
     border-spacing: 1px;
 }
 
+.content-table caption {
+    color: var(--main-font-color);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: .5rem;
+}
+
 .content-table thead th {
-    background-color: #009879;
+    background-color: #f8610a;
     color: var(--main-color-white);
     text-align: center;
     font-weight: 500;
-    width: 50px;
+    width: auto;
 }
 
 .content-table th, 
 .content-table tr {
     padding: 5px 5px;
     color: var(--main-color-gray);
-    text-align: center;
+    text-align: left;
 }
 
 .content-table tbody tr {
@@ -84,28 +90,13 @@ main h2 {
     background-color: #fafae1;
 }
 
-/* .content-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-} */
-
-/* .content-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
-} */
-
-.first-column {
-    padding: 6px 8px;
-    background-color: #009879;
-    color: var(--main-color-white);
-    font-weight: 500;
+.content-table tbody td {
+    padding: 0 5px;
 }
 
-.value-diff {
-    background-color: #f5a884;
-    font-weight: 500;
+.column-center {
+    text-align: center;
 }
-
-
-
 
 
 .footer {
