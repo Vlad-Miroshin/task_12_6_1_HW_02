@@ -3,8 +3,9 @@ include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data.php';
 
 // полный список персон
 function getItems() {
+    // возвращаем клон массива, чтобы не влиять на исходный
     global $example_persons_array;
-    return $example_persons_array;
+    return array_replace([], $example_persons_array);
 };
 
 // возвращает массив из 3 элементов: Фамилия, Имя, Отчество
@@ -13,15 +14,19 @@ function getPartsFromFullname($fullname) {
         $items = [];
 
         $parts = explode(' ', $fullname);
+
+        // используем первые три слова (вдруг их больше?)
+        // также, подавляем повторяющиеся разделители
         foreach($parts as $p) {
             if (trim($p)) {
-                $items[] = mb_convert_case($p, MB_CASE_TITLE, "UTF-8");
+                $items[] = mb_convert_case($p, MB_CASE_TITLE);
 
                 if (count($items) === 3)
                     break;
             }
         }
 
+        // если слов менее трёх - добираем
         while (count($items) < 3) {
             $items[] = '';
         }
@@ -125,10 +130,18 @@ function getGenderName($g) {
         return 'Не определён';
 };
 
-// выбор идеальной пары
+function getGenderSym($g) {
+    if ($g === 1)
+        return '♂';
+    else if ($g === -1)
+        return '♀';
+    else
+        return '';
+}
+
+// Подбор идеальной пары
 function getPerfectPartner($fam, $im, $ot, $items) {
-    // для неопределённого пола невозможно выбрать противоположный
-    // поэтому такие варианты исключаем
+
     $res = [
         'gender_1' => 0,
         'short_1' => '',
@@ -142,14 +155,17 @@ function getPerfectPartner($fam, $im, $ot, $items) {
     $fullname = getFullnameFromParts($fam, $im, $ot);
     $g1 = getGenderFromName($fullname);
 
+    $res['gender_1'] = $g1;
+    $res['short_1'] = getShortName($fullname);
+
+    // для неопределённого пола невозможно выбрать противоположный,
+    // поэтому такие варианты исключаем
     if ($g1 === 0) {
         $res['comment'] = 'Невозможен подбор пары для неопределённого пола';
     } else {
-        $res['gender_1'] = $g1;
-        $res['short_1'] = getShortName($fullname);
-
         $attempt = 0;
         $partner = null;
+        $max_attempt = count($items) * 2;
 
         do {
             
@@ -158,7 +174,7 @@ function getPerfectPartner($fam, $im, $ot, $items) {
     
             $g2 = getGenderFromName($partner['fullname']);
 
-            if (++$attempt > 10) {
+            if (++$attempt > $max_attempt) {
                 $partner = null;
                 break;
             }
@@ -168,11 +184,11 @@ function getPerfectPartner($fam, $im, $ot, $items) {
         if ($partner) {
             $res['gender_2'] = $g2;
             $res['short_2'] = getShortName($partner['fullname']);
-            $res['comment'] = 'Не удалось подобрать идеальную пару';
+            $res['percent'] = round(rand(5000, 10000) / 100, 2);
+            $res['success'] = true;
         } else {
             $res['comment'] = 'Не удалось подобрать идеальную пару';
         }
-    
     }
 
     return $res;

@@ -46,12 +46,6 @@ main {
     width: 100%;
 }
 
-main h2 {
-    color: var(--main-font-color);
-    font-size: 1rem;
-    width: 100%;
-}
-
 .content-table {
     background-color: var(--main-color-white);
     margin: 25px 0;
@@ -67,6 +61,7 @@ main h2 {
     color: var(--main-font-color);
     font-size: 1rem;
     font-weight: 700;
+    margin-top: 1rem;
     margin-bottom: .5rem;
 }
 

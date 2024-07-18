@@ -83,6 +83,40 @@
                 </tbody>
             </table>
             
+            <table class="content-table">
+                <caption aria-label="Выбор">Подбор идеальной пары.</caption>
+                <thead>
+                    <tr>
+                        <th>Партнёр 1</th>
+                        <th>Партнёр 2</th>
+                        <th>Результат</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php 
+                        $items = getItems();
+                        shuffle($items);
+
+                        foreach($items as $item): 
+                            $fullname = $item['fullname'];
+                            $parts = getPartsFromFullname($fullname);
+
+                            $cmp = getPerfectPartner($parts[0], $parts[1], $parts[2], $items);
+                    ?>
+                    <tr>
+                        <td><?= $cmp['short_1'] . ' ' . getGenderSym($cmp['gender_1']); ?></td>
+                        <td><?= $cmp['short_2'] . ' ' . getGenderSym($cmp['gender_2']); ?></td>
+
+                        <?php if ($cmp['success']): ?>
+                            <td><?= '♡ Идеально на ' . $cmp['percent'] . '%  ♡'; ?></td>
+                        <?php else: ?>
+                            <td><?= $cmp['comment']; ?></td>
+                        <?php endif; ?>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
 
         <div class="footer">

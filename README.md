@@ -20,7 +20,6 @@
 - [CSS](https://developer.mozilla.org/ru/docs/Learn/Getting_started_with_the_web/CSS_basics) Большинство элементов стилизовано.
 - [CSS Variables](https://developer.mozilla.org/ru/docs/Web/CSS/Using_CSS_custom_properties) Переменные CSS.
 - [PHP](https://www.php.net/)
-- Страницы сайта проверены через <a href="https://validator.w3.org/#validate_by_upload" target="_blank">Validator W3C</a> и не имеют ошибок.
 
 ## Реализованные требования
 
